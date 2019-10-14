@@ -1,0 +1,84 @@
+diff --git a/includes/media.browser.inc b/includes/media.browser.inc
+index c0a25ea..aa3ef04 100644
+--- a/includes/media.browser.inc
++++ b/includes/media.browser.inc
+@@ -149,41 +149,11 @@ function media_browser($selected = NULL) {
+ }
+ 
+ /**
+- * Attaches media browser javascript to an element.
+- *
+- * @param array $element
+- *   The element array to attach to.
+- */
+-function media_attach_browser_js(&$element) {
+-  static $js_attached = FALSE;
+-  if (!$js_attached) {
+-    $javascript = media_browser_js();
+-    foreach ($javascript as $key => $definitions) {
+-      foreach ($definitions as $definition) {
+-        $element['#attached'][$key][] = $definition;
+-      }
+-    }
+-    $js_attached = TRUE;
+-  }
+-}
+-
+-/**
+- * Helper function to define browser javascript.
+- */
+-function media_browser_js() {
+-  return array(
+-    'library' => array(
+-      array('media', 'media_browser'),
+-      array('media', 'media_browser_settings'),
+-    ),
+-  );
+-}
+-
+-/**
+  * Menu callback for testing the media browser.
+  */
+ function media_browser_testbed($form) {
+-  media_attach_browser_js($form);
++  $form['#attached']['library'][] = array('media', 'media_browser');
++  $form['#attached']['library'][] = array('media', 'media_browser_settings');
+ 
+   $form['test_element'] = array(
+     '#type' => 'media',
+diff --git a/media.module b/media.module
+index 016ed3e..d560eb0 100644
+--- a/media.module
++++ b/media.module
+@@ -816,8 +816,8 @@ function media_element_process($element, &$form_state, $form) {
+     )
+   );
+ 
+-  module_load_include('inc', 'media', 'includes/media.browser');
+-  media_attach_browser_js($element);
++  $element['#attached']['library'][] = array('media', 'media_browser');
++  $element['#attached']['library'][] = array('media', 'media_browser_settings');
+ 
+   // Prefix and suffix used for Ajax replacement.
+   $element['#prefix'] = '<div id="' . $element['#id'] . '-ajax-wrapper">';
+diff --git a/modules/media_wysiwyg/media_wysiwyg.module b/modules/media_wysiwyg/media_wysiwyg.module
+index 9a1f8ef..c2f3246 100644
+--- a/modules/media_wysiwyg/media_wysiwyg.module
++++ b/modules/media_wysiwyg/media_wysiwyg.module
+@@ -111,14 +111,8 @@ function media_wysiwyg_pre_render_text_format($element) {
+   }
+ 
+   // Load the media browser library.
+-  module_load_include('inc', 'media', 'includes/media.browser');
+-  $javascript = media_browser_js();
+-
+-  foreach ($javascript as $key => $definitions) {
+-    foreach ($definitions as $definition) {
+-      $element['#attached'][$key][] = $definition;
+-    }
+-  }
++  $element['#attached']['library'][] = array('media', 'media_browser');
++  $element['#attached']['library'][] = array('media', 'media_browser_settings');
+ 
+   // Add wysiwyg-specific settings.
+   $settings = array('wysiwyg_allowed_attributes' => variable_get('media_wysiwyg_wysiwyg_allowed_attributes', _media_wysiwyg_wysiwyg_allowed_attributes_default()));
