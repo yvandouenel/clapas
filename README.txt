@@ -1,4 +1,9 @@
+Spécificités du site
+---------------------
+Sur la page de contact, le formulaire était appelé comme ceci :
+<?php $block = module_invoke('contact_form_blocks', 'block_view', '0'); ?><?php print $block['content']; ?></div>
 
+Le theme est un theme visiblement acheté et qu'il ne faut pas versionner. cf : sites/all/themes/goodnex 
 CONTENTS OF THIS FILE
 ---------------------
 
