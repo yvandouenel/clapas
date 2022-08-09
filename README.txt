@@ -1,4 +1,8 @@
+ATTENTION
+---------------------
+Il faut copier les 2 répertoires  goodnex et goodnex_sub et leurs contenus dans sites/all/themes
 
+ * About Drupal
 CONTENTS OF THIS FILE
 ---------------------
 
